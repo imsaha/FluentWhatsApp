@@ -1,4 +1,4 @@
-# WhatsApp.Net
+# FluentWhatsApp
 
 A modern, fluent .NET 10 SDK for sending WhatsApp messages through
 the [WhatsApp Cloud API](https://developers.facebook.com/docs/whatsapp/cloud-api?utm_source=chatgpt.com).
@@ -7,7 +7,7 @@ Built as a lightweight class library using `System.Text.Json` for serialization 
 ## Installation
 
 ```bash
-dotnet add package WhatsApp.Net
+dotnet add package FluentWhatsApp
 ```
 
 ---
@@ -56,7 +56,7 @@ Then inject `IWhatsAppClient` wherever you need it:
 public class NotificationService(IWhatsAppClient whatsApp)
 {
     public Task NotifyAsync(string phone) =>
-        whatsApp.SendToIndividualAsync(phone, b => b.Text("Hello from WhatsApp.Net!").Build());
+        whatsApp.SendToIndividualAsync(phone, b => b.Text("Hello from FluentWhatsApp!").Build());
 }
 ```
 

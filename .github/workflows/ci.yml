@@ -56,7 +56,7 @@ jobs:
       - name: Pack
         run: |
           VERSION="${{ github.ref_name }}"
-          dotnet pack WhatsApp.Net/WhatsApp.Net.csproj \
+          dotnet pack FluentWhatsApp/FluentWhatsApp.csproj \
             --no-restore \
             -c Release \
             -p:Version="${VERSION#v}" \

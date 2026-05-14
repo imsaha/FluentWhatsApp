@@ -4,13 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-`WhatsApp.Net` is a .NET 10 class library wrapping the WhatsApp Cloud API (Meta). It targets `net10.0` with nullable reference types and implicit usings enabled. No external dependencies — serialization uses `System.Text.Json`.
+`FluentWhatsApp` is a .NET 10 class library wrapping the WhatsApp Cloud API (Meta). It targets `net10.0` with nullable reference types and implicit usings enabled. No external dependencies — serialization uses `System.Text.Json`.
 
 ## Build & Run Commands
 
 ```powershell
-dotnet build WhatsApp.Net/WhatsApp.Net.csproj
-dotnet restore WhatsApp.Net/WhatsApp.Net.csproj
+dotnet build FluentWhatsApp/FluentWhatsApp.csproj
+dotnet restore FluentWhatsApp/FluentWhatsApp.csproj
 
 # Run tests (once a test project exists)
 dotnet test
@@ -20,7 +20,7 @@ dotnet test --filter "FullyQualifiedName~TestClassName.TestMethodName"
 ## Architecture
 
 ```
-WhatsApp.Net/
+FluentWhatsApp/
 ├── Models/
 │   ├── MediaObject.cs          shared media reference (id or link + caption + filename)
 │   ├── LocationObject.cs
