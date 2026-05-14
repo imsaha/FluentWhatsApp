@@ -1,6 +1,6 @@
 # FluentWhatsApp
 
-A modern, fluent .NET 10 SDK for sending WhatsApp messages through
+A modern, fluent dotnet SDK for sending WhatsApp messages through
 the [WhatsApp Cloud API](https://developers.facebook.com/docs/whatsapp/cloud-api?utm_source=chatgpt.com).
 Built as a lightweight class library using `System.Text.Json` for serialization — with no external JSON dependencies.
 
