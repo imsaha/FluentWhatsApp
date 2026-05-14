@@ -1,0 +1,71 @@
+name: CI / Publish
+
+on:
+  push:
+    branches: [main, master]
+    tags: ['v*.*.*']
+  pull_request:
+    branches: [main, master]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # required for SourceLink
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore -c Release -p:ContinuousIntegrationBuild=true
+
+      # Uncomment when a test project is added:
+      # - name: Test
+      #   run: dotnet test --no-build -c Release --logger "trx;LogFileName=results.trx"
+
+  publish:
+    name: Publish to NuGet
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    environment: nuget
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Pack
+        run: |
+          VERSION="${{ github.ref_name }}"
+          dotnet pack WhatsApp.Net/WhatsApp.Net.csproj \
+            --no-restore \
+            -c Release \
+            -p:Version="${VERSION#v}" \
+            -p:ContinuousIntegrationBuild=true \
+            -o nupkgs
+
+      - name: Push to NuGet.org
+        run: |
+          dotnet nuget push nupkgs/*.nupkg \
+            --api-key ${{ secrets.NUGET_API_KEY }} \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
