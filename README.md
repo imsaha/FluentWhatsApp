@@ -1,64 +1,13 @@
 # WhatsApp.Net
 
-A .NET 10 class library for sending messages via the [WhatsApp Cloud API](https://developers.facebook.com/docs/whatsapp/cloud-api). No external JSON dependencies — serialization uses `System.Text.Json`.
-
-## Requirements
-
-- .NET 10
-- A [Meta WhatsApp Business](https://business.facebook.com/) account with an active phone number and access token
+A modern, fluent .NET 10 SDK for sending WhatsApp messages through
+the [WhatsApp Cloud API](https://developers.facebook.com/docs/whatsapp/cloud-api?utm_source=chatgpt.com).
+Built as a lightweight class library using `System.Text.Json` for serialization — with no external JSON dependencies.
 
 ## Installation
 
 ```bash
 dotnet add package WhatsApp.Net
-```
-
-## Setup
-
-Register the client in your DI container with your phone number ID and access token:
-
-```csharp
-builder.Services.AddWhatsAppClient(options =>
-{
-    options.PhoneNumberId = "YOUR_PHONE_NUMBER_ID";
-    options.AccessToken   = "YOUR_ACCESS_TOKEN";
-    // options.ApiVersion = "v22.0"; // default
-});
-```
-
-Then inject `IWhatsAppClient` wherever you need it:
-
-```csharp
-public class NotificationService(IWhatsAppClient whatsApp)
-{
-    public Task NotifyAsync(string phone) =>
-        whatsApp.SendToIndividualAsync(phone, b => b.Text("Hello from WhatsApp.Net!").Build());
-}
-```
-
-### Resilience
-
-The library registers a standard resilience pipeline (retry, circuit-breaker, timeouts) via `Microsoft.Extensions.Http.Resilience`. Customise it through the optional second parameter:
-
-```csharp
-builder.Services.AddWhatsAppClient(
-    options =>
-    {
-        options.PhoneNumberId = "...";
-        options.AccessToken   = "...";
-    },
-    resilience =>
-    {
-        resilience.Retry.MaxRetryAttempts = 5;
-    });
-```
-
-### Custom client
-
-Bring your own `IWhatsAppClient` implementation (e.g., for testing):
-
-```csharp
-builder.Services.AddWhatsAppClient<MyCustomClient>();
 ```
 
 ---
@@ -87,6 +36,55 @@ await client.SendToGroupAsync("GROUP_ID", b =>
 ```
 
 ---
+
+## Setup
+
+Register the client in your DI container with your phone number ID and access token:
+
+```csharp
+builder.Services.AddWhatsAppClient(options =>
+{
+    options.PhoneNumberId = "YOUR_PHONE_NUMBER_ID";
+    options.AccessToken   = "YOUR_ACCESS_TOKEN";
+    // options.ApiVersion = "v22.0"; // default
+});
+```
+
+Then inject `IWhatsAppClient` wherever you need it:
+
+```csharp
+public class NotificationService(IWhatsAppClient whatsApp)
+{
+    public Task NotifyAsync(string phone) =>
+        whatsApp.SendToIndividualAsync(phone, b => b.Text("Hello from WhatsApp.Net!").Build());
+}
+```
+
+### Resilience
+
+The library registers a standard resilience pipeline (retry, circuit-breaker, timeouts) via
+`Microsoft.Extensions.Http.Resilience`. Customise it through the optional second parameter:
+
+```csharp
+builder.Services.AddWhatsAppClient(
+    options =>
+    {
+        options.PhoneNumberId = "...";
+        options.AccessToken   = "...";
+    },
+    resilience =>
+    {
+        resilience.Retry.MaxRetryAttempts = 5;
+    });
+```
+
+### Custom client
+
+Bring your own `IWhatsAppClient` implementation (e.g., for testing):
+
+```csharp
+builder.Services.AddWhatsAppClient<MyCustomClient>();
+```
 
 ## Message types
 
@@ -321,7 +319,8 @@ await client.SendAsync(request);
 
 ## Reply context and callback data
 
-Chain `.ReplyTo()` and/or `.WithCallbackData()` before the message type method to attach a reply context or a business opaque callback string:
+Chain `.ReplyTo()` and/or `.WithCallbackData()` before the message type method to attach a reply context or a business
+opaque callback string:
 
 ```csharp
 var request = WhatsAppMessage
