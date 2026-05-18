@@ -1,6 +1,6 @@
-using FluentWhatsApp.Builders;
-using FluentWhatsApp.Models;
-using FluentWhatsApp.Requests;
+using FluentWhatsApp.Message.Builders;
+using FluentWhatsApp.Message.Models;
+using FluentWhatsApp.Message.Requests;
 
 namespace FluentWhatsApp;
 
