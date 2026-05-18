@@ -1,8 +1,8 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using FluentWhatsApp.Exceptions;
-using FluentWhatsApp.Models;
-using FluentWhatsApp.Requests;
+using FluentWhatsApp.Message.Models;
+using FluentWhatsApp.Message.Requests;
 
 namespace FluentWhatsApp;
 

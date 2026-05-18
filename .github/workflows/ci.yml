@@ -56,6 +56,12 @@ jobs:
       - name: Pack
         run: |
           VERSION="${{ github.ref_name }}"
+          dotnet pack FluentWhatsApp.Message/FluentWhatsApp.Message.csproj \
+            --no-restore \
+            -c Release \
+            -p:Version="${VERSION#v}" \
+            -p:ContinuousIntegrationBuild=true \
+            -o nupkgs
           dotnet pack FluentWhatsApp/FluentWhatsApp.csproj \
             --no-restore \
             -c Release \
@@ -67,7 +73,11 @@ jobs:
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         run: |
-          dotnet nuget push nupkgs/*.nupkg \
+          dotnet nuget push "nupkgs/*.nupkg" \
+            --api-key $NUGET_API_KEY \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
+          dotnet nuget push "nupkgs/*.snupkg" \
             --api-key $NUGET_API_KEY \
             --source https://api.nuget.org/v3/index.json \
             --skip-duplicate

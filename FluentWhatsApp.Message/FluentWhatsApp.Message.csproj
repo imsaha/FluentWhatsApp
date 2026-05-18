@@ -8,12 +8,12 @@
         <NoWarn>$(NoWarn);CS1591</NoWarn>
 
         <!-- NuGet identity -->
-        <PackageId>FluentWhatsApp</PackageId>
+        <PackageId>FluentWhatsApp.Message</PackageId>
         <Version>1.0.0</Version>
         <Authors>Siraj M</Authors>
         <Copyright>Copyright © 2026 Siraj M</Copyright>
-        <Description>A fluent dotnet SDK client library for the WhatsApp Cloud API (Meta). Send text, media, interactive, template, and contact messages via a fluent builder API with built-in resilience.</Description>
-        <PackageTags>whatsapp;whatsapp-cloud-api;meta;messaging;cloud-api</PackageTags>
+        <Description>Fluent message-building API for the WhatsApp Cloud API (Meta). Build text, media, interactive, template, and contact message requests with zero external dependencies. Pair with the FluentWhatsApp package to send messages.</Description>
+        <PackageTags>whatsapp;whatsapp-cloud-api;meta;messaging;cloud-api;fluent</PackageTags>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -30,18 +30,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="..\README.md" Pack="true" PackagePath="\"/>
+        <None Include="README.md" Pack="true" PackagePath="\"/>
         <None Include="..\LICENSE" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.*"/>
-        <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="10.6.0"/>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.300" PrivateAssets="All"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\FluentWhatsApp.Message\FluentWhatsApp.Message.csproj"/>
     </ItemGroup>
 
 </Project>
