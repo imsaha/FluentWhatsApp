@@ -28,11 +28,9 @@ Console.WriteLine(response.FirstMessageId); // wamid.xxx
 ### Using the interface helpers
 
 ```csharp
-await client.SendToIndividualAsync("+1234567890", b =>
-    b.Text("Hello!").Build());
+await client.SendToIndividualAsync("+1234567890", b => b.Text("Hello!"));
 
-await client.SendToGroupAsync("GROUP_ID", b =>
-    b.Text("Hello group!").Build());
+await client.SendToGroupAsync("GROUP_ID", b => b.Text("Hello group!"));
 ```
 
 ---
@@ -46,7 +44,7 @@ builder.Services.AddWhatsAppClient(options =>
 {
     options.PhoneNumberId = "YOUR_PHONE_NUMBER_ID";
     options.AccessToken   = "YOUR_ACCESS_TOKEN";
-    // options.ApiVersion = "v22.0"; // default
+    // options.ApiVersion = "v25.0"; // default
 });
 ```
 
@@ -55,8 +53,8 @@ Then inject `IWhatsAppClient` wherever you need it:
 ```csharp
 public class NotificationService(IWhatsAppClient whatsApp)
 {
-    public Task NotifyAsync(string phone) =>
-        whatsApp.SendToIndividualAsync(phone, b => b.Text("Hello from FluentWhatsApp!").Build());
+    public Task NotifyAsync(string phone, string message) =>
+        whatsApp.SendToIndividualAsync(phone, b => b.Text(message));
 }
 ```
 
