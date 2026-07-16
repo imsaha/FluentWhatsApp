@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using System.Net.Http;
 
 namespace FluentWhatsApp.Exceptions;
 
@@ -14,6 +15,9 @@ public sealed class WhatsAppApiException : Exception
     public int ErrorCode { get; }
     public string? ErrorType { get; }
     public string? FbTraceId { get; }
+
+    public HttpRequestMessage? Request { get; init; }
+    public HttpResponseMessage? Response { get; init; }
 }
 
 internal record WhatsAppErrorResponse(

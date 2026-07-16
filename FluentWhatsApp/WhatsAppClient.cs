@@ -28,11 +28,31 @@ internal sealed class WhatsAppClient : IWhatsAppClient
         req.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _options.AccessToken);
 
         var response = await _http.SendAsync(req, cancellationToken);
-
         if (!response.IsSuccessStatusCode)
         {
-            var errorBody = await response.Content.ReadFromJsonAsync<WhatsAppErrorResponse>(cancellationToken);
-            throw new WhatsAppApiException(errorBody?.Error ?? new WhatsAppApiError { Code = (int) response.StatusCode });
+            WhatsAppErrorResponse? errorBody = null;
+            var raw = await response.Content.ReadAsStringAsync(cancellationToken);
+            try
+            {
+                errorBody = JsonSerializer.Deserialize<WhatsAppErrorResponse>(raw);
+            }
+            catch (JsonException)
+            {
+                // fall through — errorBody stays null, raw body preserved below
+            }
+
+            var apiError = errorBody?.Error ?? new WhatsAppApiError
+            {
+                Code = (int)response.StatusCode,
+                Message = raw 
+            };
+
+            var exception = new WhatsAppApiException(apiError)
+            {
+                Request = req,
+                Response = response
+            };
+            throw exception;
         }
 
         return (await response.Content.ReadFromJsonAsync<SendMessageResponse>(cancellationToken))!;

@@ -70,7 +70,7 @@ public sealed class InteractiveMessageBuilder
 
     public InteractiveMessageRequest CtaUrl(string displayText, string url)
     {
-        return BuildWith("button", new CtaUrlAction { Parameters = new CtaUrlParameters(displayText, url) });
+        return BuildWith("cta_url", new CtaUrlAction { Parameters = new CtaUrlParameters(displayText, url) });
     }
 
     public InteractiveMessageRequest Flow(string flowToken, string flowId, string flowCta,
